@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">joyjourney</string>
+    <string-array name="gender_array">
+        <item>Laki-Laki</item>
+        <item>Perempuan</item>
+    </string-array>
+
+    <string-array name="refund_array">
+        <item>Tidak</item>
+        <item>Iya</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

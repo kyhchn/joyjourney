@@ -12,6 +12,7 @@ import com.example.joyjourney.R;
 import com.example.joyjourney.databinding.ActivityLoginBinding;
 import com.example.joyjourney.databinding.ActivitySignupBinding;
 import com.example.joyjourney.login.LoginActivity;
+import com.example.joyjourney.register.RegisterActivity;
 import com.example.joyjourney.utils.Utils;
 
 public class SignupActivity extends AppCompatActivity {
@@ -42,7 +43,7 @@ public class SignupActivity extends AppCompatActivity {
 
         viewModel.getNavigateToNextScreen().observe(this, navigate->{
             if(navigate){
-                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                Intent intent = new Intent(SignupActivity.this, RegisterActivity.class);
                 startActivity(intent);
                 finish();
             }
