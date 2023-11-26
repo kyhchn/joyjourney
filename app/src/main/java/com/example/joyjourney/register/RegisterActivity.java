@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -38,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
 
         activityRegisterBinding.dateEditText.setOnClickListener(view->{
-            Utils.showDatePickerDialog(view, getApplicationContext());
+            showDatePickerDialog(view,RegisterActivity.this);
         });
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -82,6 +83,18 @@ public class RegisterActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    public static void showDatePickerDialog(View view, Context context) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                context,
+                (DatePicker view1, int year, int month, int dayOfMonth) -> {
+                    String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                    ((TextInputEditText) view).setText(selectedDate);
+                },
+                // Set initial date if needed
+                1960, 0, 1
+        );
+        datePickerDialog.show();
     }
 
 }

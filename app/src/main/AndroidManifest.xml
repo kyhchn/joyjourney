@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,6 +15,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Joyjourney"
         tools:targetApi="31">
+        <activity
+            android:name=".user.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".user.wahanadetail.checkout.payment.MetodePembayaran"
+            android:exported="false" />
+        <activity
+            android:name=".user.wahanadetail.checkout.CheckoutActivity"
+            android:exported="false"
+            android:label="@string/title_activity_checkout"
+            android:theme="@style/Theme.Joyjourney" />
+        <activity
+            android:name=".user.wahanadetail.DetailWisataActivity"
+            android:exported="false"
+            android:label="@string/title_activity_detail_wisata"
+            android:theme="@style/Theme.Joyjourney.NoActionBar" />
+        <activity
+            android:name=".user.HomeActivity"
+            android:exported="false" />
         <activity
             android:name=".admin.crud.CrudActivity"
             android:exported="false" />

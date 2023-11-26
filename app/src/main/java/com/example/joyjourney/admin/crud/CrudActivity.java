@@ -1,6 +1,7 @@
 package com.example.joyjourney.admin.crud;
 
-import static java.security.AccessController.getContext;
+import static com.example.joyjourney.utils.Utils.isNotEmpty;
+import static com.example.joyjourney.utils.Utils.timePicker;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.joyjourney.R;
@@ -25,9 +25,6 @@ import com.example.joyjourney.model.Wahana;
 import com.example.joyjourney.utils.NotifyDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.textfield.TextInputEditText;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,11 +56,11 @@ public class CrudActivity extends AppCompatActivity {
         binding.refundSpinner.setAdapter(adapter);
 
         binding.openHour.setOnClickListener(v->{
-            timePicker(v, CrudActivity.this);
+            timePicker(v, CrudActivity.this, 0);
         });
 
         binding.closedHour.setOnClickListener(v->{
-            timePicker(v,CrudActivity.this);
+            timePicker(v,CrudActivity.this, 0);
         });
 
         binding.imageEdit.setOnClickListener(v->{
@@ -211,9 +208,6 @@ public class CrudActivity extends AppCompatActivity {
         });
 
     }
-    private boolean isNotEmpty(String value) {
-        return value != null && !value.isEmpty();
-    }
 
     private String getHour(String time){
         return time.split(":")[0];
@@ -230,21 +224,5 @@ public class CrudActivity extends AppCompatActivity {
             binding.imageEdit.setText("imageSelected");
         }
 
-    }
-
-    void timePicker(View view, Context context){
-        Calendar c = Calendar.getInstance();
-        TimePickerDialog timePickerDialog = new TimePickerDialog(
-                CrudActivity.this,
-                (v, hourOfDay, minute) -> {
-                    String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                    Toast.makeText(CrudActivity.this, selectedTime, Toast.LENGTH_SHORT).show();
-                    ((EditText)view).setText(selectedTime);
-                },
-                0,
-                0,
-                true
-        );
-        timePickerDialog.show();
     }
 }

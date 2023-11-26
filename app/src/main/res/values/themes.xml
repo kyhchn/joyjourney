@@ -16,4 +16,10 @@
         <item name="chipStrokeWidth">1dp</item>
     </style>
     <style name="Theme.Joyjourney" parent="Base.Theme.Joyjourney" />
+    <style name="Theme.Joyjourney.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.Joyjourney.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Joyjourney.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

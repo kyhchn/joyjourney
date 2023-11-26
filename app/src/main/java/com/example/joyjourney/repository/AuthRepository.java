@@ -34,6 +34,10 @@ public class AuthRepository {
                 });
     }
 
+    public void logout(){
+        auth.signOut();
+    }
+
     // Callback interface to handle success and error events
     public interface AuthCallback {
         void onSuccess(FirebaseUser user);

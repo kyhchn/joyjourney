@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_nav"
+    app:startDestination="@id/userHomeFragment">
+
+
+    <fragment
+        android:id="@+id/userHomeFragment"
+        android:name="com.example.joyjourney.user.UserHomeFragment"
+        android:label="fragment_user_home"
+        tools:layout="@layout/fragment_user_home" />
+    <fragment
+        android:id="@+id/userFilterFragment"
+        android:name="com.example.joyjourney.user.UserFilterFragment"
+        android:label="fragment_user_filter"
+        tools:layout="@layout/fragment_user_filter" />
+    <fragment
+        android:id="@+id/userPesananFragment"
+        android:name="com.example.joyjourney.user.UserPesananFragment"
+        android:label="fragment_user_pesanan"
+        tools:layout="@layout/fragment_user_pesanan" />
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.joyjourney.user.UserProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" />
+</navigation>

@@ -2,12 +2,13 @@ package com.example.joyjourney.model;
 
 import com.google.firebase.firestore.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class User {
+public class User implements Serializable {
     private String uid;
     private String name;
     private String date;
@@ -84,26 +85,6 @@ public class User {
 
     public void setPesananList(List<Pesanan> pesananList) {
         this.pesananList = pesananList;
-    }
-
-    @Exclude
-    public Map<String, Object> toMap() {
-        Map<String, Object> userMap = new HashMap<>();
-        userMap.put("uid", uid);
-        userMap.put("name", name);
-        userMap.put("date", date);
-        userMap.put("gender", gender.name()); // Assuming you want to store the enum name
-        userMap.put("phoneNumber", phoneNumber);
-        userMap.put("isAdmin", isAdmin);
-
-        // Serialize the pesananList
-        List<Map<String, Object>> serializedPesananList = new ArrayList<>();
-        for (Pesanan pesanan : pesananList) {
-            serializedPesananList.add(pesanan.toMap());
-        }
-        userMap.put("pesananList", serializedPesananList);
-
-        return userMap;
     }
 
     public enum Gender {

@@ -15,6 +15,7 @@ import com.example.joyjourney.login.LoginActivity;
 import com.example.joyjourney.model.User;
 import com.example.joyjourney.register.RegisterActivity;
 import com.example.joyjourney.repository.FirestoreRepository;
+import com.example.joyjourney.user.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(activityMainBinding.getRoot());
         FirebaseUser currentUser = auth.getCurrentUser();
 
-        activityMainBinding.signoutButton.setVisibility(View.INVISIBLE);
 
         if(currentUser==null){
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -49,11 +49,14 @@ public class MainActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if(document.exists()){
                             try {
-                                activityMainBinding.signoutButton.setVisibility(View.VISIBLE);
                                 activityMainBinding.progressBar.setVisibility(View.INVISIBLE);
                                 User user = document.toObject(User.class);
                                 if(user.getAdmin()){
                                     Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }else{
+                                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -70,12 +73,5 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }
-
-        activityMainBinding.signoutButton.setOnClickListener(view->{
-            auth.signOut();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        });
     }
 }

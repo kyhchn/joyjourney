@@ -383,7 +383,7 @@
                     />
                 <EditText
                     android:layout_marginTop="8dp"
-                    android:drawableStart="@drawable/ic_image"
+                    android:drawableStart="@drawable/ic_image_outline"
                     android:background="@drawable/custom_input"
                     android:id="@+id/imageEdit"
                     android:layout_width="match_parent"
@@ -417,6 +417,8 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/uploadKatalog"
             android:layout_marginBottom="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
             android:background="@drawable/primary_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -424,6 +426,8 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/deleteKatalog"
+            android:textColor="@color/primary"
+            android:textAllCaps="false"
             android:layout_width="match_parent"
             android:background="@drawable/secondary_button"
             android:layout_height="wrap_content"

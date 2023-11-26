@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.joyjourney.R;
@@ -103,6 +104,7 @@ public class DetailWahanaFragment extends Fragment {
         GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 2);
         binding.recycler.setLayoutManager(layoutManager);
         binding.recycler.setAdapter(adapter);
+
 
         viewModel.getListWahana().observe(getViewLifecycleOwner(), wahanas->{
             wahanaList.clear();

@@ -10,11 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.joyjourney.R;
 import com.example.joyjourney.admin.crud.CrudActivity;
 import com.example.joyjourney.model.Wahana;
+import com.example.joyjourney.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -22,6 +24,8 @@ import java.util.List;
 public class WahanaAdapter extends RecyclerView.Adapter<WahanaAdapter.Holder> {
     List<Wahana> wahanaList;
     Context context;
+    @Nullable
+    int resource;
     private OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
@@ -32,13 +36,21 @@ public class WahanaAdapter extends RecyclerView.Adapter<WahanaAdapter.Holder> {
         this.wahanaList = wahanaList;
         this.context = context;
         this.onItemClickListener = onItemClickListener;
+        resource = R.layout.katalog_item_layout;
+    }
+
+    public WahanaAdapter(List<Wahana> wahanaList, Context context, int resource, OnItemClickListener onItemClickListener) {
+        this.wahanaList = wahanaList;
+        this.context = context;
+        this.onItemClickListener = onItemClickListener;
+        this.resource = resource;
     }
 
 
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.katalog_item_layout, parent, false);
+        View view = LayoutInflater.from(context).inflate(resource, parent, false);
         return new Holder(view);
     }
 
@@ -53,7 +65,7 @@ public class WahanaAdapter extends RecyclerView.Adapter<WahanaAdapter.Holder> {
 
         holder.title.setText(wahana.getName());
         holder.desc.setText(wahana.getDescription());
-        holder.price.setText(wahana.getPrice()+"");
+        holder.price.setText(Utils.formatRupiah(wahana.getPrice()));
         Picasso.get().load(wahana.getImageUrl()).into(holder.image);
     }
 

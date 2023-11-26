@@ -1,5 +1,6 @@
 package com.example.joyjourney.repository;
 
+import com.example.joyjourney.model.Pesanan;
 import com.example.joyjourney.model.User;
 import com.example.joyjourney.model.Wahana;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,6 +51,23 @@ public class FirestoreRepository {
     public void getWahanaByName (String name, OnCompleteListener<QuerySnapshot> onCompleteListener){
         db.collection("wahana")
                 .orderBy("name")
+                .startAt(name)
+                .endAt(name + "\uf8ff")
+                .get()
+                .addOnCompleteListener(onCompleteListener);
+    }
+
+    public void addPesanan(Pesanan pesanan, OnSuccessListener<DocumentReference> onSuccessListener, OnFailureListener onFailureListener){
+        db.collection("pesanan").add(pesanan).addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);
+    }
+
+    public void getAllPesanan(OnCompleteListener<QuerySnapshot> onCompleteListener){
+        db.collection("pesanan").get().addOnCompleteListener(onCompleteListener);
+    }
+
+    public void getPesananByName (String name, OnCompleteListener<QuerySnapshot> onCompleteListener){
+        db.collection("pesanan")
+                .orderBy("wahanaName")
                 .startAt(name)
                 .endAt(name + "\uf8ff")
                 .get()
