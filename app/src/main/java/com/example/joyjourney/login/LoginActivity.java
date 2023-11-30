@@ -23,20 +23,21 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        binding.loginButton.setOnClickListener(view->{
-            String email = binding.editTextTextEmailAddress.getEditText().getText().toString().trim();
-            String password = binding.editPassword.getEditText().getText().toString().trim();
 
+        binding.daftarButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
+        binding.masukButton.setOnClickListener(v -> {
+            String email = binding.emailEditText.getText().toString();
+            String password = binding.passwordEditText.getText().toString();
             if(Utils.isValidEmail(email)){
                 loginViewModel.loginUser(email, password);
             }else{
-                binding.editTextTextEmailAddress.getEditText().setError("Email tidak valid");
+                binding.emailEditText.setError("Email tidak valid");
             }
-        });
-
-        binding.signUpButton.setOnClickListener(view->{
-            Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-            startActivity(intent);
         });
 
         loginViewModel.getNavigateToNextScreen().observe(this, navigate->{

@@ -20,13 +20,30 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class UserSharedViewModel extends ViewModel {
     private AuthRepository authRepository = new AuthRepository();
     private FirestoreRepository firestoreRepository = new FirestoreRepository();
     private MutableLiveData<List<Wahana>> wahanaList = new MutableLiveData<>();
     private MutableLiveData<List<Pesanan>> listPesanan = new MutableLiveData<>();
+    private MutableLiveData<List<Wahana>> listQueriedWahana = new MutableLiveData<>(new LinkedList<>());
+    private MutableLiveData<Integer> startPrice = new MutableLiveData<>(0);
+    private MutableLiveData<String> queryString = new MutableLiveData<>("");
+    private MutableLiveData<Integer> endPrice = new MutableLiveData<>(-1);
+
+    private MutableLiveData<Map<String, Boolean>> facilities = new MutableLiveData<>(new HashMap<String, Boolean>(){
+        {
+            put("Wifi", false);
+            put("Kantin", false);
+            put("Kolam Renang", false);
+            put("Musholla", false);
+            put("Parkir Gratis", false);
+        }
+    });
     private MutableLiveData<String> error = new MutableLiveData<>();
     public FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     public LiveData<String> getError(){
@@ -37,7 +54,19 @@ public class UserSharedViewModel extends ViewModel {
     public LiveData<List<Wahana>> getWahanaList(){
         return wahanaList;
     }
-
+    public LiveData<List<Wahana>> getQueriedWahanaList(){
+        return listQueriedWahana;
+    }
+    public LiveData<Integer> getStartPrice(){
+        return startPrice;
+    }
+    public LiveData<Integer> getEndPrice(){
+        return endPrice;
+    }
+    public LiveData<Map<String, Boolean>> getFacilities(){
+        return facilities;
+    }
+    public LiveData<String> getQueryString(){return queryString;}
     public MutableLiveData<User> getUser(){
         return user;
     }
@@ -108,6 +137,37 @@ public class UserSharedViewModel extends ViewModel {
             }
         });
     }
+
+    public void fetchQueriedWahana(String name, int startPrice, int endPrice, Map<String, Boolean> facilities){
+        this.startPrice.setValue(startPrice);
+        this.endPrice.setValue(endPrice);
+        this.facilities.setValue(facilities);
+            firestoreRepository.getWahanaByName(name, startPrice, endPrice, facilities, queryDocumentSnapshots -> {
+                List<Wahana> result = new LinkedList<>();
+                queryDocumentSnapshots.getDocuments().forEach(documentSnapshot -> {
+                    Wahana wahana = documentSnapshot.toObject(Wahana.class);
+                    result.add(wahana);
+                });
+                listQueriedWahana.postValue(result);
+            }, e -> {
+
+            });
+    }
+
+    public void fetchQueriedWahana(String name){
+        firestoreRepository.getWahanaByName(name, startPrice.getValue(), endPrice.getValue(), facilities.getValue(), queryDocumentSnapshots -> {
+            List<Wahana> result = new LinkedList<>();
+            queryDocumentSnapshots.getDocuments().forEach(documentSnapshot -> {
+                Wahana wahana = documentSnapshot.toObject(Wahana.class);
+                result.add(wahana);
+            });
+            listQueriedWahana.postValue(result);
+        }, e -> {
+
+        });
+    }
+
+
 
     public void logout(){
         authRepository.logout();

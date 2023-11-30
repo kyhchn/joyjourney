@@ -45,7 +45,7 @@ public class HistoryFragment extends Fragment {
         pesananList = new LinkedList<>();
         viewModel = new ViewModelProvider(requireActivity()).get(AdminSharedViewModel.class);
         viewModel.fetchPesanan();
-        PesananAdapter adapter = new PesananAdapter(pesananList,getContext(), pesanan -> {
+        PesananAdapter adapter = new PesananAdapter(PesananAdapter.type.Admin, pesananList,getContext(), pesanan -> {
             PesananDialog pesananDialog = new PesananDialog(requireActivity(), pesanan);
             pesananDialog.showDialog();
         } );

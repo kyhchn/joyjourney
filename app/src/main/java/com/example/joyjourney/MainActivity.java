@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.joyjourney.admin.AdminActivity;
+import com.example.joyjourney.boarding.BoardingActivity;
 import com.example.joyjourney.databinding.ActivityMainBinding;
 import com.example.joyjourney.login.LoginActivity;
 import com.example.joyjourney.model.User;
@@ -25,7 +26,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirestoreRepository firestoreRepository;
-
     ActivityMainBinding activityMainBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(currentUser==null){
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            Intent intent = new Intent(getApplicationContext(), BoardingActivity.class);
             startActivity(intent);
             finish();
         }else{

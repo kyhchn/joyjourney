@@ -19,11 +19,21 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class PesananAdapter extends RecyclerView.Adapter<PesananAdapter.Holder> {
+    public enum type{
+        Admin,User
+    }
     List<Pesanan> listPesanan;
+    int resource;
 
-    public PesananAdapter(List<Pesanan> listPesanan, Context context, OnItemClickListener onItemClickListener) {
+    public PesananAdapter(PesananAdapter.type type,List<Pesanan> listPesanan, Context context, OnItemClickListener onItemClickListener) {
+        if(type == PesananAdapter.type.Admin){
+            this.resource = R.layout.pesanan_item_layout;
+        }else{
+            this.resource = R.layout.user_pesanan_item_layout;
+        }
         this.listPesanan = listPesanan;
         this.context = context;
+        this.resource = R.layout.pesanan_item_layout;
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -51,7 +61,7 @@ public class PesananAdapter extends RecyclerView.Adapter<PesananAdapter.Holder> 
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.pesanan_item_layout, parent, false);
+        View view = LayoutInflater.from(context).inflate(resource, parent, false);
         return new Holder(view);
     }
 

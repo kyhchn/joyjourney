@@ -38,6 +38,7 @@ public class DetailWisataActivity extends AppCompatActivity {
         binding.facilitiesGrid.setAdapter(adapter);
         binding.titleTv.setText(wahana.getName());
         binding.addressTv.setText(wahana.getAddress());
+        binding.openTv.setText(wahana.getOpenDate()+":00 WIB");
         binding.wisataDesc.setText(wahana.getDescription());
         binding.priceTv.setText(formatAmount(wahana.getPrice()));
         Picasso.get().load(wahana.getImageUrl()).into(binding.imageIv);

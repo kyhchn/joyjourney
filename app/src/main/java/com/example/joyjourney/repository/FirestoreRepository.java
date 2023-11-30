@@ -1,5 +1,7 @@
 package com.example.joyjourney.repository;
 
+import android.util.Log;
+
 import com.example.joyjourney.model.Pesanan;
 import com.example.joyjourney.model.User;
 import com.example.joyjourney.model.Wahana;
@@ -8,10 +10,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class FirestoreRepository {
 
@@ -73,5 +81,38 @@ public class FirestoreRepository {
                 .get()
                 .addOnCompleteListener(onCompleteListener);
     }
+    public void getWahanaByName(String name, int startPrice, int endPrice, Map<String, Boolean> facilities, OnSuccessListener<QuerySnapshot> onCompleteListener, OnFailureListener onFailureListener) {
+        CollectionReference wahanaCollection = db.collection("wahana");
+        Query query = wahanaCollection;
+        if (name != null && !name.isEmpty()) {
+            query = query.whereGreaterThanOrEqualTo("name", name);
+        }
+        if (startPrice > 0) {
+            query = query.whereGreaterThanOrEqualTo("price", startPrice);
+        }
+        if (endPrice > 0) {
+            query = query.whereLessThanOrEqualTo("price", endPrice);
+        }
+        List<String> facilitiestTarget = new LinkedList<>();
+        for (Map.Entry<String, Boolean> entry : facilities.entrySet()) {
+            String facilityName = entry.getKey();
+            boolean hasFacility = entry.getValue();
+            if(hasFacility){
+                facilitiestTarget.add(facilityName);
+            }
+        }
+        if(facilitiestTarget.size()>0){
+            Log.d("filterfirestore","filtered facilities");
+            for (String s : facilitiestTarget) {
+                Log.d("filterfirestore", "value:"+s);
+            }
+            query = query.whereArrayContainsAny("facilities", facilitiestTarget);
+        }
+        query.get()
+                .addOnSuccessListener(onCompleteListener)
+                .addOnFailureListener(onFailureListener);
+    }
+
+
 
 }

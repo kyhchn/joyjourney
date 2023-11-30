@@ -26,19 +26,20 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this).get(SignupViewModel.class);
 
-        binding.signupButton.setOnClickListener(view->{
-            String email = binding.editTextTextEmailAddress.getEditText().getText().toString().trim();
-            String password = binding.editPassword.getEditText().getText().toString().trim();
+        binding.masukButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
+        binding.daftarButton.setOnClickListener(v -> {
+            String email = binding.emailEditText.getText().toString();
+            String password = binding.passwordEditText.getText().toString();
             if(Utils.isValidEmail(email)){
                 viewModel.registerUser(email, password);
             }else{
-                binding.editTextTextEmailAddress.getEditText().setError("Email tidak valid");
+                binding.emailEditText.setError("Email tidak valid");
             }
-        });
-
-        binding.LoginButton.setOnClickListener(view->{
-            finish();
         });
 
         viewModel.getNavigateToNextScreen().observe(this, navigate->{

@@ -9,6 +9,14 @@
         <item>Tidak</item>
         <item>Iya</item>
     </string-array>
+
+    <string-array name="facilities_array">
+        <item>Wifi</item>
+        <item>Kantin</item>
+        <item>Kolam Renang</item>
+        <item>Musholla</item>
+        <item>Parkir Gratis</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_detail_wisata">DetailWisataActivity</string>

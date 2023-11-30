@@ -14,21 +14,21 @@ import android.view.ViewGroup;
 
 import com.example.joyjourney.R;
 import com.example.joyjourney.admin.PesananAdapter;
-import com.example.joyjourney.databinding.FragmentUserPesananBinding;
+import com.example.joyjourney.databinding.FragmentUserRiwayatBinding;
 import com.example.joyjourney.model.Pesanan;
 import com.example.joyjourney.utils.PesananDialog;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserPesananFragment extends Fragment {
-    FragmentUserPesananBinding binding;
+public class UserRiwayatFragment extends Fragment {
+    FragmentUserRiwayatBinding binding;
     UserSharedViewModel vm;
     List<Pesanan> pesananList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentUserPesananBinding.inflate(inflater, container, false);
+        binding = FragmentUserRiwayatBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -39,19 +39,30 @@ public class UserPesananFragment extends Fragment {
         pesananList = new LinkedList<>();
         vm.fetchPesanan();
 
-        PesananAdapter adapter = new PesananAdapter(pesananList,getContext(), pesanan -> {
+        PesananAdapter adapter = new PesananAdapter(PesananAdapter.type.User, pesananList, getContext(), pesanan -> {
             PesananDialog pesananDialog = new PesananDialog(requireActivity(), pesanan);
             pesananDialog.showDialog();
-        } );
+        });
+
+        binding.chipAktif.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.chipInactive.setChecked(false);
+            }
+        });
+
+        binding.chipInactive.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.chipAktif.setChecked(false);
+            }
+        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         binding.historyRecycler.setLayoutManager(layoutManager);
         binding.historyRecycler.setAdapter(adapter);
 
-        vm.getListPesanan().observe( getViewLifecycleOwner(), pesanans -> {
+        vm.getListPesanan().observe(getViewLifecycleOwner(), pesanans -> {
             pesananList.clear();
             pesananList.addAll(pesanans);
             adapter.notifyDataSetChanged();
         });
-
     }
 }
