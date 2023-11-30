@@ -18,6 +18,7 @@ import com.example.joyjourney.databinding.FragmentUserRiwayatBinding;
 import com.example.joyjourney.model.Pesanan;
 import com.example.joyjourney.utils.PesananDialog;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class UserRiwayatFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         vm = new ViewModelProvider(requireActivity()).get(UserSharedViewModel.class);
-        pesananList = new LinkedList<>();
+        pesananList = new ArrayList<>();
         vm.fetchPesanan();
 
         PesananAdapter adapter = new PesananAdapter(PesananAdapter.type.User, pesananList, getContext(), pesanan -> {
@@ -47,12 +48,14 @@ public class UserRiwayatFragment extends Fragment {
         binding.chipAktif.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 binding.chipInactive.setChecked(false);
+                filterIsUsed(false, adapter);
             }
         });
 
         binding.chipInactive.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 binding.chipAktif.setChecked(false);
+                filterIsUsed(true, adapter);
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
@@ -64,5 +67,17 @@ public class UserRiwayatFragment extends Fragment {
             pesananList.addAll(pesanans);
             adapter.notifyDataSetChanged();
         });
+    }
+
+    private void filterIsUsed(boolean isUsed, PesananAdapter adapter){
+        pesananList.clear();
+        List<Pesanan> list = new ArrayList<>();
+        vm.getListPesanan().getValue().forEach(pesanan -> {
+            if(pesanan.getIsUsed()==isUsed){
+                list.add(pesanan);
+            }
+        });
+        pesananList.addAll(list);
+        adapter.notifyDataSetChanged();
     }
 }

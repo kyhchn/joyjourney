@@ -75,6 +75,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:padding="8dp"
             android:minHeight="43dp"
+            android:inputType="numberSigned"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />

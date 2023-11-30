@@ -35,6 +35,12 @@ public class SignupActivity extends AppCompatActivity {
         binding.daftarButton.setOnClickListener(v -> {
             String email = binding.emailEditText.getText().toString();
             String password = binding.passwordEditText.getText().toString();
+            String passwordConfirrmation = binding.passwordConfirmation.getEditText().getText().toString();
+
+            if(!password.equals(passwordConfirrmation)){
+                Toast.makeText(this, "Password tidak sama", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if(Utils.isValidEmail(email)){
                 viewModel.registerUser(email, password);
             }else{

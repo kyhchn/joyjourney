@@ -45,12 +45,11 @@ public class DetailWisataActivity extends AppCompatActivity {
         binding.backButton.setOnClickListener(v->{
             finish();
         });
-
+        binding.mapIllusration.setOnClickListener(v -> {
+            openMap();
+        });
         binding.showMap.setOnClickListener(v->{
-            Uri gmapsUri = Uri.parse(wahana.getMapsUrl());
-            Intent intent = new Intent(Intent.ACTION_VIEW, gmapsUri);
-            intent.setPackage("com.google.android.apps.maps");
-            startActivity(intent);
+           openMap();
         });
 
         binding.bookButton.setOnClickListener(v->{
@@ -68,5 +67,12 @@ public class DetailWisataActivity extends AppCompatActivity {
         } else {
             return String.format("Rp %d", amount);
         }
+    }
+
+    private void openMap(){
+        Uri gmapsUri = Uri.parse(wahana.getMapsUrl());
+        Intent intent = new Intent(Intent.ACTION_VIEW, gmapsUri);
+        intent.setPackage("com.google.android.apps.maps");
+        startActivity(intent);
     }
 }

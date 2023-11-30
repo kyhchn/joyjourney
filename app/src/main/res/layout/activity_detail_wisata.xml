@@ -233,6 +233,20 @@
                             android:gravity="end|center_vertical"
                             android:text="buka di map"/>
                     </LinearLayout>
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        app:strokeColor="@color/white"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/mapIllusration"
+                            android:clickable="true"
+                            android:layout_width="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/map_illustration"
+                            android:layout_height="wrap_content">
+
+                        </ImageView>
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

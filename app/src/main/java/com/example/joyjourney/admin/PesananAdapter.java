@@ -33,7 +33,6 @@ public class PesananAdapter extends RecyclerView.Adapter<PesananAdapter.Holder> 
         }
         this.listPesanan = listPesanan;
         this.context = context;
-        this.resource = R.layout.pesanan_item_layout;
         this.onItemClickListener = onItemClickListener;
     }
 
