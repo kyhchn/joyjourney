@@ -11,6 +11,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,7 @@ public class UserFilterFragment extends Fragment {
         binding.wahanaRecycler.setAdapter(adapter);
 
         vm.getQueriedWahanaList().observe(getViewLifecycleOwner(), wahanas->{
+            Log.d("filter user", "data changed");
             wahanaList.clear();
             wahanaList.addAll(wahanas);
             adapter.notifyDataSetChanged();

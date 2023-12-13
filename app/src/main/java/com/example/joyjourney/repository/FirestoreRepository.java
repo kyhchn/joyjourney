@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -81,38 +82,56 @@ public class FirestoreRepository {
                 .get()
                 .addOnCompleteListener(onCompleteListener);
     }
-    public void getWahanaByName(String name, int startPrice, int endPrice, Map<String, Boolean> facilities, OnSuccessListener<QuerySnapshot> onCompleteListener, OnFailureListener onFailureListener) {
+    public void getWahanaByNameAndPrice(String name, int startPrice, int endPrice, Map<String, Boolean> facilities, WahanaResultCallback callback) {
+        Log.d("filter user", "started");
         CollectionReference wahanaCollection = db.collection("wahana");
         Query query = wahanaCollection;
-        if (name != null && !name.isEmpty()) {
-            query = query.whereGreaterThanOrEqualTo("name", name);
+
+        // Apply facilities filter on the server
+        List<String> facilitiestTarget = new LinkedList<>();
+        for (Map.Entry<String, Boolean> entry : facilities.entrySet()) {
+            String facilityName = entry.getKey();
+            boolean hasFacility = entry.getValue();
+            if (hasFacility) {
+                facilitiestTarget.add(facilityName);
+            }
         }
+
+        if (facilitiestTarget.size() > 0) {
+            Log.d("filterfirestore", "filtered facilities");
+            for (String s : facilitiestTarget) {
+                Log.d("filterfirestore", "value:" + s);
+            }
+            query = query.whereArrayContainsAny("facilities", facilitiestTarget);
+        }
+
+        // Apply price filter on the server
         if (startPrice > 0) {
             query = query.whereGreaterThanOrEqualTo("price", startPrice);
         }
         if (endPrice > 0) {
             query = query.whereLessThanOrEqualTo("price", endPrice);
         }
-        List<String> facilitiestTarget = new LinkedList<>();
-        for (Map.Entry<String, Boolean> entry : facilities.entrySet()) {
-            String facilityName = entry.getKey();
-            boolean hasFacility = entry.getValue();
-            if(hasFacility){
-                facilitiestTarget.add(facilityName);
-            }
-        }
-        if(facilitiestTarget.size()>0){
-            Log.d("filterfirestore","filtered facilities");
-            for (String s : facilitiestTarget) {
-                Log.d("filterfirestore", "value:"+s);
-            }
-            query = query.whereArrayContainsAny("facilities", facilitiestTarget);
-        }
+
         query.get()
-                .addOnSuccessListener(onCompleteListener)
-                .addOnFailureListener(onFailureListener);
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Wahana> filteredDocuments = new ArrayList<>();
+                    for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                        String documentName = document.getString("name").toLowerCase();
+                        if (documentName != null && documentName.contains(name.toLowerCase())) {
+                            filteredDocuments.add(document.toObject(Wahana.class));
+                        }
+                    }
+
+                    // Call the callback with the result
+                    callback.onWahanaResult(filteredDocuments);
+                })
+                .addOnFailureListener(e -> callback.onFailure(e));
     }
 
-
+    public interface WahanaResultCallback {
+        void onWahanaResult(List<Wahana> wahanaList);
+        void onFailure(Exception e);
+    }
 
 }

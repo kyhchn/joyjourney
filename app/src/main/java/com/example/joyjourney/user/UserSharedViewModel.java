@@ -99,24 +99,6 @@ public class UserSharedViewModel extends ViewModel {
         });
     }
 
-    public void fetchWahanaByName(String name){
-        firestoreRepository.getWahanaByName(name,task -> {
-            if(task.isSuccessful()){
-                List<Wahana> result = new ArrayList<>();
-                QuerySnapshot querySnapshot = task.getResult();
-
-                for(DocumentSnapshot doc:querySnapshot.getDocuments()){
-                    Wahana wahana = doc.toObject(Wahana.class);
-                    result.add(wahana);
-                }
-
-                wahanaList.postValue(result);
-            }else{
-                error.postValue(task.getException().getMessage());
-            }
-        });
-    }
-
     public void fetchPesanan(){
         firestoreRepository.getAllPesanan(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -139,35 +121,39 @@ public class UserSharedViewModel extends ViewModel {
     }
 
     public void fetchQueriedWahana(String name, int startPrice, int endPrice, Map<String, Boolean> facilities){
+        Log.d("filter user", name+" "+startPrice+" "+endPrice);
         this.startPrice.setValue(startPrice);
         this.endPrice.setValue(endPrice);
         this.facilities.setValue(facilities);
-            firestoreRepository.getWahanaByName(name, startPrice, endPrice, facilities, queryDocumentSnapshots -> {
-                List<Wahana> result = new LinkedList<>();
-                queryDocumentSnapshots.getDocuments().forEach(documentSnapshot -> {
-                    Wahana wahana = documentSnapshot.toObject(Wahana.class);
-                    result.add(wahana);
-                });
-                listQueriedWahana.postValue(result);
-            }, e -> {
+        firestoreRepository.getWahanaByNameAndPrice(name, startPrice, endPrice, facilities, new FirestoreRepository.WahanaResultCallback() {
+            @Override
+            public void onWahanaResult(List<Wahana> wahanaList) {
+                listQueriedWahana.postValue(wahanaList);
+            }
 
-            });
-    }
+            @Override
+            public void onFailure(Exception e) {
 
-    public void fetchQueriedWahana(String name){
-        firestoreRepository.getWahanaByName(name, startPrice.getValue(), endPrice.getValue(), facilities.getValue(), queryDocumentSnapshots -> {
-            List<Wahana> result = new LinkedList<>();
-            queryDocumentSnapshots.getDocuments().forEach(documentSnapshot -> {
-                Wahana wahana = documentSnapshot.toObject(Wahana.class);
-                result.add(wahana);
-            });
-            listQueriedWahana.postValue(result);
-        }, e -> {
-
+            }
         });
     }
 
+    public void fetchQueriedWahana(String name){
+        Log.d("filter user", "fetched from search bar");
+        int startPrice = getStartPrice().getValue();
+        int endPrice = getEndPrice().getValue();
+        firestoreRepository.getWahanaByNameAndPrice(name, startPrice, endPrice, getFacilities().getValue(), new FirestoreRepository.WahanaResultCallback() {
+            @Override
+            public void onWahanaResult(List<Wahana> wahanaList) {
+                listQueriedWahana.postValue(wahanaList);
+            }
 
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+    }
 
     public void logout(){
         authRepository.logout();
