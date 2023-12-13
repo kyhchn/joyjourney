@@ -93,8 +93,8 @@ public class CheckoutViewModel extends ViewModel {
         target.setIsUsed(false);
         target.setUid(firebaseUser.getUid());
         repository.addPesanan(pesanan.getValue(), documentReference -> {
-            Pesanan result = documentReference.get().getResult().toObject(Pesanan.class);
-            if(result!=null){
+            String pesananID = documentReference.getId();
+            if(pesananID!=null){
                 isSuccess.postValue(true);
             }else{
                 isSuccess.postValue(false);

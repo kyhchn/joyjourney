@@ -47,6 +47,12 @@ public class UserProfileFragment extends Fragment {
             startActivity(intent);
             requireActivity().finish();
         });
+        binding.deleteButton.setOnClickListener(v->{
+            vm.deleteAccount(task -> {
+                vm.logout();
+            }, e -> {});
+
+        });
 
         vm.getUser().observe(getViewLifecycleOwner(), user -> {
             binding.userName.setText(user.getName());

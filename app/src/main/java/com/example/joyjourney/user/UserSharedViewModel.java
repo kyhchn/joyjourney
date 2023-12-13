@@ -13,6 +13,8 @@ import com.example.joyjourney.model.Wahana;
 import com.example.joyjourney.repository.AuthRepository;
 import com.example.joyjourney.repository.FirestoreRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -100,7 +102,8 @@ public class UserSharedViewModel extends ViewModel {
     }
 
     public void fetchPesanan(){
-        firestoreRepository.getAllPesanan(new OnCompleteListener<QuerySnapshot>() {
+        FirebaseUser user = authRepository.getCurrentUser();
+        firestoreRepository.getAllUserPesanan(user.getUid(),new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
@@ -157,5 +160,11 @@ public class UserSharedViewModel extends ViewModel {
 
     public void logout(){
         authRepository.logout();
+    }
+    void deleteAccount(OnCompleteListener<Void> onSuccessListener, OnFailureListener onFailureListener){
+        FirebaseUser user = authRepository.getCurrentUser();
+        firestoreRepository.deleteUser(user.getUid(), unused -> {
+            authRepository.deleteAccount(onSuccessListener, onFailureListener);
+        },onFailureListener);
     }
 }

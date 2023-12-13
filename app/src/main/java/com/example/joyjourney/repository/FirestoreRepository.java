@@ -38,6 +38,14 @@ public class FirestoreRepository {
         }
     }
 
+    public void deleteUser (String uid, OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener){
+        DocumentReference userRef = db.collection("users").document(uid);
+        userRef.
+                delete().
+                addOnSuccessListener(onSuccessListener).
+                addOnFailureListener(onFailureListener);
+    }
+
     public void getUser(String userId, OnCompleteListener<DocumentSnapshot> onCompleteListener) {
         db.collection("users").document(userId).get()
                 .addOnCompleteListener(onCompleteListener);
@@ -72,6 +80,10 @@ public class FirestoreRepository {
 
     public void getAllPesanan(OnCompleteListener<QuerySnapshot> onCompleteListener){
         db.collection("pesanan").get().addOnCompleteListener(onCompleteListener);
+    }
+
+    public void getAllUserPesanan(String uid,OnCompleteListener<QuerySnapshot> onCompleteListener){
+        db.collection("pesanan").whereEqualTo("uid", uid).get().addOnCompleteListener(onCompleteListener);
     }
 
     public void getPesananByName (String name, OnCompleteListener<QuerySnapshot> onCompleteListener){

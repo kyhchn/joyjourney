@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(activityMainBinding.getRoot());
         FirebaseUser currentUser = auth.getCurrentUser();
 
-
         if(currentUser==null){
             Intent intent = new Intent(getApplicationContext(), BoardingActivity.class);
             startActivity(intent);

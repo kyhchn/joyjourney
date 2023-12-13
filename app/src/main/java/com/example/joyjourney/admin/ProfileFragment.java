@@ -47,6 +47,13 @@ public class ProfileFragment extends Fragment {
             startActivity(i);
             requireActivity().finish();
         });
+        binding.deleteButton.setOnClickListener(v->{
+            viewModel.deleteAccount();
+            Intent i = new Intent(requireActivity(), MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+            requireActivity().finish();
+        });
 
         viewModel.getUser().observe(getViewLifecycleOwner(), user1 -> {
             binding.userName.setText(user1.getName());

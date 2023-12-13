@@ -1,5 +1,6 @@
 package com.example.joyjourney.admin;
 
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -143,5 +144,14 @@ public class AdminSharedViewModel extends ViewModel {
 
     void logout(){
         authRepository.logout();
+    }
+
+    void deleteAccount(){
+        FirebaseUser user = authRepository.getCurrentUser();
+        firestoreRepository.deleteUser(user.getUid(), unused -> {
+            authRepository.deleteAccount(task -> {
+                authRepository.logout();
+            }, e->{});
+        },e -> {});
     }
 }
