@@ -50,6 +50,13 @@ public class FirestoreRepository {
         db.collection("users").document(userId).get()
                 .addOnCompleteListener(onCompleteListener);
     }
+    public void updateUser(String userId, Map<String, Object> updates, OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener) {
+        DocumentReference userRef = db.collection("users").document(userId);
+        userRef.update(updates)
+                .addOnSuccessListener(onSuccessListener)
+                .addOnFailureListener(onFailureListener);
+    }
+
 
     public void addOrUpdateWahana(Wahana wahana, OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener) {
         db.collection("wahana").document(wahana.getId()).set(wahana).addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener);

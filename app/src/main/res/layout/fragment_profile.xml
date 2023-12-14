@@ -35,7 +35,7 @@
                 android:textSize="18sp" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/editButton"
                 android:layout_width="48dp"
                 android:backgroundTint="@color/white"
                 android:layout_height="48dp"
