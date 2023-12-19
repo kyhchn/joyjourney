@@ -36,7 +36,7 @@ public class ProfileFragment extends Fragment {
         return binding.getRoot();
     }
 
-    @Override
+    @Override                           
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(AdminSharedViewModel.class);
